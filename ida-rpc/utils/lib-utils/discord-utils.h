@@ -70,8 +70,12 @@ namespace discord_utils
 				}
 
 				else if ( !g_options.address_enabled ) {
-
-					qsnprintf( state, sizeof( state ) - 1, "Reversing %s", current_function );
+                    bool is_unnamed = strstr( current_function, "sub_" );
+                    if ( g_options.hide_unnamed_funcs && is_unnamed ) {
+                        qsnprintf( state, sizeof( state ) - 1, "Reversing something.." );
+                    } else {
+                        qsnprintf( state, sizeof( state ) - 1, "Reversing %s", current_function );
+                    }
 				}
 			}
 			else {

@@ -19,7 +19,8 @@ enum checkbox_bitmasks {
 	function_name = ( 1 << 2 ),
 	address		  = ( 1 << 3 ),
 	time_elapsed  = ( 1 << 4 ),
-	output		  = ( 1 << 5 )
+	output		  = ( 1 << 5 ),
+	hide_unnamed  = ( 1 << 6 )
 };
 
 const char* website_url = "https://github.com/offlineJ/ida-rpc";
@@ -44,6 +45,7 @@ void show_options( )
 	if ( g_options.address_enabled      ) checkbox_flags |= checkbox_bitmasks::address;
 	if ( g_options.timeelapsed_enabled  ) checkbox_flags |= checkbox_bitmasks::time_elapsed;
 	if ( g_options.output_enabled       ) checkbox_flags |= checkbox_bitmasks::output;
+	if ( g_options.hide_unnamed_funcs   ) checkbox_flags |= checkbox_bitmasks::hide_unnamed;
 	
 	int result = ask_form // using ask_form over adding a qt dependency to this, again reference https://www.hex-rays.com/products/ida/support/sdkdoc/group___f_o_r_m___c.html
 	(                     // add macros for the checkboxes and other fields etc. later
@@ -57,6 +59,7 @@ void show_options( )
 		"<#Displays current function name#Function name enabled:C>\n"
 		"<#Displays address ( of / within ) current function#Address enabled:C>\n"
 		"<#Displays the time since IDA was opened#Time elapsed enabled:C>\n"
+		"<#Hide showing functions like sub_XXX#Hide Unnamed Functions:C>\n"
 		"<#Prints various information to output window for debugging#Output enabled ( debug ):C>>\n"
 
 		"IDA RPC version: " AUTO_VERSION_RELEASE_STR " by shigureJ\n"
@@ -79,6 +82,7 @@ void show_options( )
 	g_options.address_enabled	   = ( ( checkbox_flags & checkbox_bitmasks::address       ) != 0 );
 	g_options.timeelapsed_enabled  = ( ( checkbox_flags & checkbox_bitmasks::time_elapsed  ) != 0 );
 	g_options.output_enabled       = ( ( checkbox_flags & checkbox_bitmasks::output        ) != 0 );
+	g_options.hide_unnamed_funcs   = ( ( checkbox_flags & checkbox_bitmasks::hide_unnamed  ) != 0 );
 
 	
 	if ( result == 0 || result == -1 ) { // if user pressed esc key or cancels restore old config

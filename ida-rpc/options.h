@@ -26,6 +26,7 @@ public:
 	OPTION( bool, filename_enabled, true );
 	
 	OPTION( bool, functionname_enabled, true );
+	OPTION( bool, hide_unnamed_funcs, true );
 
 	OPTION( bool, address_enabled, true );
 	OPTION( int,  address_type, ( int )address_type::function_base_address );
